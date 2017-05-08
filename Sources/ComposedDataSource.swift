@@ -24,6 +24,7 @@
 //
 
 import Foundation
+import UIKit
 
 open class ComposedDataSource : DataSource {
     var mappings = [DataSourceMapping]()

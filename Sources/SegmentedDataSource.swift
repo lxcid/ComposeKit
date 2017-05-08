@@ -24,6 +24,7 @@
 //
 
 import Foundation
+import UIKit
 
 /** A subclass of `DataSource` with multiple child data sources of which only one will be active at a time.
 

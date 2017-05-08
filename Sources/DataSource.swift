@@ -24,6 +24,7 @@
 //
 
 import Foundation
+import UIKit
 
 @objc public protocol DataSourceDelegate : NSObjectProtocol {
     @objc optional func dataSource(_ dataSource: DataSource, didInsertItemsAtIndexPaths indexPaths: [IndexPath])
