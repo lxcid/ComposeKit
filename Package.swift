@@ -3,5 +3,6 @@
 import PackageDescription
 
 let package = Package(
-    name: "ComposeKit"
+    name: "ComposeKit",
+    swiftLanguageVersions: [3]
 )
