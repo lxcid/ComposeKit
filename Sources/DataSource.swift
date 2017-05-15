@@ -42,7 +42,7 @@ import UIKit
     /// Called just before a datasource begins loading its content.
     @objc optional func dataSourceWillLoadContent(_ dataSource: DataSource)
     /// If the content was loaded successfully, the error will be nil.
-    @objc optional func dataSource(_ dataSource: DataSource, didLoadContentWithError error: NSError?)
+    @objc optional func dataSource(_ dataSource: DataSource, didLoadContentWithError error: Error?)
     
     @objc optional func dataSource(_ dataSource: DataSource, performBatchUpdate update: (() -> Void)?, complete: (() -> Void)?)
 }
@@ -234,7 +234,7 @@ open class DataSource : NSObject {
     }
     
     /// Notify the parent data source that this data source has finished loading its content with the given error (nil if no error). Unlike other notifications, this notification will not propagate past the parent data source.
-    open func notifyContentLoadedWithError(_ error: NSError?) {
+    open func notifyContentLoadedWithError(_ error: Error?) {
         assert(Thread.isMainThread, "This method must be called on the main thread")
         // FIXME: (stan@trifia.com) Executes loading completion block (a stored property) if available…
         self.delegate?.dataSource?(self, didLoadContentWithError: error)
@@ -258,17 +258,17 @@ extension DataSource : UICollectionViewDataSource {
 }
 
 extension DataSource : UITableViewDataSource {
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    open func numberOfSections(in tableView: UITableView) -> Int {
         return self.numberOfSections
     }
     
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // When we're showing a placeholder, we have to lie to the collection view about the number of items we have. Otherwise, it will ask for layout attributes that we don't have.
         // FIXME: (khinboon@d--buzz.com) return self.placeholder ? 0 : self.numberOfItemsInSection(section)
         return self.numberOfItemsInSection(section)
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         fatalError("Should be implemented by subclasses")
     }
     
@@ -282,18 +282,18 @@ extension DataSource : UITableViewDataSource {
 }
 
 extension DataSource : UITableViewDelegate {
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
     
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return nil
     }
     
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
     
-    public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+    open func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return false
     }
 }
